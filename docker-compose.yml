@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:1
+    volumes:
+      - ./tongan:/usr/share/nginx/html
+    networks:
+      - nginx-bridge
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "10"
+    environment:
+      VIRTUAL_HOST: "tong.ithuan.tw"
+      LETSENCRYPT_HOST: "tong.ithuan.tw"
+      LETSENCRYPT_EMAIL: "ithuan@ithuan.tw"
+    restart: always
+
+networks:
+  nginx-bridge:
+    name: nginx-bridge
