@@ -2,19 +2,14 @@ version: '3.7'
 
 services:
   nginx:
-    image: nginx:1
+    image: nginx:1-alpine
     volumes:
-      - ./tongan:/usr/share/nginx/html
+      - "./tongan:/usr/share/nginx/html:ro"
     networks:
       - nginx-bridge
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1m"
-        max-file: "10"
     environment:
-      VIRTUAL_HOST: "tong.ithuan.tw"
-      LETSENCRYPT_HOST: "tong.ithuan.tw"
+      VIRTUAL_HOST: "tongan-puntiunn.ithuan.tw"
+      LETSENCRYPT_HOST: "tongan-puntiunn.ithuan.tw"
       LETSENCRYPT_EMAIL: "ithuan@ithuan.tw"
     restart: always
 
