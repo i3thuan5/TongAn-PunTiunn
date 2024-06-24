@@ -15,4 +15,4 @@ services:
 
 networks:
   nginx-bridge:
-    name: nginx-bridge
+    external: true
