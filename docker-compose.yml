@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx:1-alpine
     volumes:
-      - "./tongan:/usr/share/nginx/html:ro"
+      - "./tongan/:/usr/share/nginx/html/:ro"
     networks:
       - nginx-bridge
     environment:
