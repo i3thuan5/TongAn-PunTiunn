@@ -35,6 +35,17 @@ jobs:
       services:
         - docker
       before_script:
-        - sss
+        - mkdir -p tongan/
+        - sha256sum shellcheck.sh | tee shellcheck.sha256sum.txt
+        - mv shellcheck.sh tongan/
       script:
-        - sss
+        # 做ZuGi container
+        - git clone --depth 1 https://github.com/i3thuan5/ZuGi.git
+        - docker-compose -f ZuGi/docker-compose.yml up -d --build nginx-proxy
+        # 設定container
+        - export VIRTUAL_HOST=localhost
+        - docker-compose up -d
+        - sleep 1
+        # 試lia̍h檔案
+        - curl http://localhost/shellcheck.sh
+        - sha256sum -c tee shellcheck.sha256sum.txt
