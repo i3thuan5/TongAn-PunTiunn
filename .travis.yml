@@ -47,5 +47,5 @@ jobs:
         - docker-compose up -d
         - sleep 1
         # 試lia̍h檔案
-        - curl http://localhost/shellcheck.sh
+        - curl http://localhost/shellcheck.sh | tee shellcheck.sh
         - sha256sum -c tee shellcheck.sha256sum.txt
