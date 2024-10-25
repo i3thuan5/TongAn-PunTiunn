@@ -1,0 +1,51 @@
+---
+os: linux
+dist: jammy
+language: python
+python:
+  - '3.12'
+before_install:
+  - pip install --upgrade pip setuptools
+branches:
+  only:
+    - main
+jobs:
+  include:
+    - name: Check YAML format
+      install:
+        - pip install tox
+      script:
+        - tox -e yamllint
+    - name: pymarkdown
+      install:
+        - pip install tox
+      script:
+        - tox -e pymarkdown
+    - name: flake8
+      install:
+        - pip install tox
+      script:
+        - tox -e flake8
+    - name: Check Bash format
+      install:
+        - pip install tox
+      script:
+        - tox -e shellcheck
+    - name: Integration Test
+      services:
+        - docker
+      before_script:
+        - mkdir -p tongan/
+        - sha256sum shellcheck.sh | tee shellcheck.sha256sum.txt
+        - mv shellcheck.sh tongan/
+      script:
+        # 做ZuGi container
+        - git clone --depth 1 https://github.com/i3thuan5/ZuGi.git
+        - docker-compose -f ZuGi/docker-compose.yml up -d --build nginx-proxy
+        # 設定container
+        - export VIRTUAL_HOST=localhost
+        - docker-compose up -d
+        - sleep 1
+        # 試lia̍h檔案
+        - curl http://localhost/shellcheck.sh | tee shellcheck.sh
+        - sha256sum -c shellcheck.sha256sum.txt
